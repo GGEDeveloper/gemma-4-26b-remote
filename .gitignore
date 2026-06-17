@@ -1,0 +1,41 @@
+# Gitignore para Gemma 4 26B Remote
+# Isolamento completo - não commitar logs ou estado
+
+# Logs (gerados em runtime)
+logs/
+*.log
+
+# Estado do processo (gerado em runtime)
+state/
+*.pid
+
+# Configuração local (pode ter dados sensíveis)
+.env.local
+.env.*.local
+
+# Backup de ficheiros
+*.bak
+*.backup
+*~
+
+# Editor temporários
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Python (se usarmos no futuro)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
