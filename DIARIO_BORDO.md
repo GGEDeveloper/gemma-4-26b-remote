@@ -448,11 +448,13 @@ Impacto em projetos existentes: NENHUM
 1. ⏳ Atualizar DIARIO_BORDO.md com este progresso
 2. ⏳ Commit inicial com tudo criado
 3. ⏳ Push para remoto
-4. ⏳ Configurar pubkey SSH (laptopdev -> waphixai)
-5. ⏳ Testar setup.sh no waphixai
-6. ⏳ Testar start-server.sh no waphixai
-7. ⏳ Testar conectividade do laptopdev
-8. ⏳ Configurar Claude Code no laptopdev
+4. ⏳ Criar script de configuração SSH pubkey
+5. ⏳ Commit e push do script SSH
+6. ⏳ Configurar pubkey SSH (laptopdev -> waphixai) - MANUAL
+7. ⏳ Testar setup.sh no waphixai - MANUAL
+8. ⏳ Testar start-server.sh no waphixai - MANUAL
+9. ⏳ Testar conectividade do laptopdev - MANUAL
+10. ⏳ Configurar Claude Code no laptopdev - MANUAL
 
 ### Commit Planejado
 
@@ -471,6 +473,136 @@ Impacto em projetos existentes: NENHUM
 - Todos os recursos são READ-ONLY
 - Diretórios isolados em CascadeProjects
 - Zero dependência de serviços externos
+
+**Reversibilidade**: Sim - `git reset --hard HEAD~1`
+
+---
+
+## 2026-06-18 00:10 UTC - Commit Inicial e Push
+
+### Ações Executadas
+
+1. **Inicializado repositório Git**
+   - `git init` em CascadeProjects/gemma-4-26b-remote
+   - Configurado user.name e user.email
+
+2. **Criado .gitignore**
+   - Logs (logs/, *.log)
+   - Estado (state/, *.pid)
+   - Config local (.env.local)
+   - Editor temporários
+   - Python venv (futuro)
+
+3. **Commit inicial**
+   - Mensagem detalhada seguindo estratégia de commits
+   - 9 ficheiros, 1980 linhas adicionadas
+   - Commit hash: e668d05
+
+4. **Criado repositório GitHub**
+   - Repo: GGEDeveloper/gemma-4-26b-remote
+   - Público
+   - Descrição: "Servidor LLM isolado para Gemma 4 26B A4B no waphixai para uso no Claude Code (laptopdev)"
+   - URL: https://github.com/GGEDeveloper/gemma-4-26b-remote
+
+5. **Push para GitHub**
+   - Remote adicionado automaticamente
+   - Branch master set up to track origin/master
+   - Push bem-sucedido
+
+### Decisões
+
+1. **Branch master** (não main)
+   - Git default, manter por enquanto
+   - Pode renomear para main no futuro se necessário
+
+2. **Repositório público**
+   - Permite acesso fácil do laptopdev
+   - Sem dados sensíveis (só scripts e docs)
+   - .env.gemma-remote tem paths locais, não secrets
+
+3. **Commit message detalhado**
+   - Segue padrão definido em docs/ESTRATEGIA_COMMITS.md
+   - Inclui referência ao DIARIO_BORDO.md
+   - Documenta isolamento e impacto
+
+### Próximos Passos
+
+1. ⏳ Criar script de configuração SSH pubkey
+2. ⏳ Commit e push do script SSH
+3. ⏳ Configurar pubkey SSH (MANUAL - no laptopdev)
+4. ⏳ Testar setup.sh (MANUAL - no waphixai)
+5. ⏳ Testar start-server.sh (MANUAL - no waphixai)
+6. ⏳ Testar conectividade (MANUAL - do laptopdev)
+7. ⏳ Configurar Claude Code (MANUAL - no laptopdev)
+
+### Commit Realizado
+
+**Mensagem**: `feat: estrutura inicial, scripts de gestão e documentação completa`
+
+**Hash**: e668d05
+
+**Conteúdo**: 9 ficheiros, 1980 linhas
+
+**Push**: ✅ Bem-sucedido para GitHub
+
+**Reversibilidade**: Sim - `git reset --hard e668d05~1`
+
+---
+
+## 2026-06-18 00:12 UTC - Script de Configuração SSH
+
+### Ações Executadas
+
+1. **Criado scripts/setup-ssh-key.sh**
+   - Verifica se pubkey já existe (RSA ou Ed25519)
+   - Gera nova pubkey Ed25519 se não existir
+   - Verifica conectividade SSH atual
+   - Instala pubkey no remote via ssh-copy-id ou manual
+   - Testa pubkey após instalação
+   - Permissões de execução atribuídas
+
+### Funcionalidades
+
+- **Detecção automática**: Verifica se pubkey já existe
+- **Geração de chave**: Cria Ed25519 se necessário
+- **Instalação remota**: Usa ssh-copy-id ou fallback manual
+- **Teste de validação**: Verifica se pubkey funciona
+- **Isolamento**: Não afeta configurações SSH existentes
+
+### Decisões
+
+1. **Ed25519 preferido**
+   - Mais seguro que RSA
+   - Chaves mais pequenas
+   - Melhor performance
+
+2. **Não executar automaticamente**
+   - Utilizador quer apenas sugestões
+   - Execução manual no laptopdev
+   - Evita problemas de permissões
+
+### Próximos Passos (MANUAIS)
+
+1. ⏳ Commit e push do script SSH
+2. ⏳ No laptopdev: `bash scripts/setup-ssh-key.sh`
+3. ⏳ Testar SSH sem password: `ssh mike@192.168.1.130`
+4. ⏳ No waphixai: `bash scripts/setup.sh`
+5. ⏳ No waphixai: `bash scripts/start-server.sh`
+6. ⏳ No laptopdev: Testar API `curl http://192.168.1.130:8090/v1/models`
+7. ⏳ No laptopdev: Configurar Claude Code
+
+### Commit Planejado
+
+**Mensagem**: `feat: script de configuração SSH pubkey`
+
+**Conteúdo**:
+- scripts/setup-ssh-key.sh (configuração SSH pubkey)
+- Permissões de execução
+
+**Impacto em projetos existentes**: NENHUM
+- Script isolado
+- Não modifica configurações SSH existentes
+- Execução manual no laptopdev
 
 **Reversibilidade**: Sim - `git reset --hard HEAD~1`
 
