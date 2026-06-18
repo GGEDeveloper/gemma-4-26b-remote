@@ -103,7 +103,6 @@ start_server() {
         --host "$SERVER_HOST" \
         --port "$SERVER_PORT" \
         --n-gpu-layers "$NGL" \
-        --n-moe "$NMOE" \
         --ctx-size "$CTX_SIZE" \
         --n-predict "$N_PREDICT" \
         --log-file "$LOG_OUT" \
@@ -121,7 +120,7 @@ verify_startup() {
     echo -e "${BLUE}Verificando startup...${NC}"
     
     local pid=$(cat "$PID_FILE")
-    local max_wait=30
+    local max_wait=90
     local wait=0
     
     while [ $wait -lt $max_wait ]; do
