@@ -608,7 +608,75 @@ Impacto em projetos existentes: NENHUM
 
 ---
 
-## [Futuro] - Entradas serão adicionadas aqui
+## 2026-06-18 00:20 UTC - Correção de Settings e Suporte Windows
+
+### Contexto
+
+Utilizador clarificou que:
+1. Isolamento não era exatamente como pretendido, mas ok
+2. Vamos usar a mesma base de motor do waphix-ao-os-v0.5
+3. Settings corretos: NGL 99, NMOE 20, CTX 8192 (apurados no waphix-ao-os-v0.5)
+4. Laptopdev está em Windows (PowerShell), bash não disponível
+
+### Ações Executadas
+
+1. **Atualizado config/.env.gemma-remote**
+   - NGL: 14 → 99 (settings apurados no waphix-ao-os-v0.5)
+   - Adicionado NMOE: 20 (para modelos MoE como Gemma 4 26B A4B)
+   - CTX_SIZE: 4096 → 8192 (settings apurados no waphix-ao-os-v0.5)
+   - Comentários atualizados com referência ao waphix-ao-os-v0.5
+
+2. **Criado scripts/setup-ssh-key.ps1**
+   - Versão PowerShell do script de configuração SSH
+   - Funcionalidades idênticas ao script bash
+   - Detecção automática de pubkey existente
+   - Geração de chave Ed25519 se necessário
+   - Instalação remota via ssh-copy-id ou manual
+   - Teste de validação
+
+3. **Atualizado scripts/start-server.sh**
+   - Adicionado --n-moe "$NMOE" ao comando llama-server
+   - Para suportar modelos MoE como Gemma 4 26B A4B
+
+### Decisões
+
+1. **Settings do waphix-ao-os-v0.5**
+   - NGL 99: Mais agressivo, usa mais VRAM mas melhor performance
+   - NMOE 20: Específico para modelos MoE (Mixture of Experts)
+   - CTX 8192: Contexto maior para chat e agent
+   - Baseado em testes reais no waphix-ao-os-v0.5
+
+2. **Suporte Windows**
+   - Script PowerShell para configuração SSH
+   - Mantém script bash para Linux/Mac
+   - Utilizador pode usar o que for conveniente
+
+### Próximos Passos
+
+1. ⏳ Atualizar README.md com instruções Windows
+2. ⏳ Commit e push das mudanças
+3. ⏳ No laptopdev (Windows): `.\scripts\setup-ssh-key.ps1`
+4. ⏳ No waphixai: `bash scripts/setup.sh`
+5. ⏳ No waphixai: `bash scripts/start-server.sh`
+6. ⏳ No laptopdev: Testar conectividade
+7. ⏳ No laptopdev: Configurar Claude Code
+
+### Commit Planejado
+
+**Mensagem**: `fix: atualizar settings para waphix-ao-os-v0.5 e adicionar suporte Windows`
+
+**Conteúdo**:
+- config/.env.gemma-remote (NGL 99, NMOE 20, CTX 8192)
+- scripts/setup-ssh-key.ps1 (PowerShell version)
+- scripts/start-server.sh (adicionado --n-moe)
+
+**Impacto em projetos existentes**: NENHUM
+- Configuração isolada atualizada
+- Scripts adicionados/alterados isolados
+
+**Reversibilidade**: Sim - `git reset --hard HEAD~1`
+
+---
 
 ### Formato de Entrada
 

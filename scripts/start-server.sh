@@ -103,6 +103,7 @@ start_server() {
         --host "$SERVER_HOST" \
         --port "$SERVER_PORT" \
         --n-gpu-layers "$NGL" \
+        --n-moe "$NMOE" \
         --ctx-size "$CTX_SIZE" \
         --n-predict "$N_PREDICT" \
         --log-file "$LOG_OUT" \

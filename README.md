@@ -125,28 +125,42 @@ gemma-4-26b-remote/
 
 ## 🚀 Quick Start
 
-### 1. Setup Inicial (waphixai)
+### 1. Configurar SSH (laptopdev)
+
+**No Windows (PowerShell)**:
+```powershell
+cd C:\Users\Pixie\OneDrive\Documents\aa-mike\gemma-4-26b-remote
+.\scripts\setup-ssh-key.ps1
+```
+
+**No Linux/Mac (Bash)**:
+```bash
+cd ~/gemma-4-26b-remote
+bash scripts/setup-ssh-key.sh
+```
+
+### 2. Setup Inicial (waphixai)
 
 ```bash
 cd /home/mike/CascadeProjects/gemma-4-26b-remote
 bash scripts/setup.sh
 ```
 
-### 2. Iniciar Servidor (waphixai)
+### 3. Iniciar Servidor (waphixai)
 
 ```bash
 cd /home/mike/CascadeProjects/gemma-4-26b-remote
 bash scripts/start-server.sh
 ```
 
-### 3. Verificar Status (waphixai)
+### 4. Verificar Status (waphixai)
 
 ```bash
 cd /home/mike/CascadeProjects/gemma-4-26b-remote
 bash scripts/status-server.sh
 ```
 
-### 4. Configurar Claude Code (laptopdev)
+### 5. Configurar Claude Code (laptopdev)
 
 No Claude Code, configurar:
 - **Endpoint**: `http://192.168.1.130:8090/v1`
@@ -166,14 +180,16 @@ No Claude Code, configurar:
 | **Parâmetros** | 25.2B total / 3.8B ativos (MoE) |
 | **Quantização** | Q4_K_XL |
 | **Backend** | Vulkan (ROCm bloqueado) |
-| **NGL** | 14 (~6.8 GB VRAM) |
-| **Context** | 4096 tokens |
+| **NGL** | 99 (settings apurados no waphix-ao-os-v0.5) |
+| **NMOE** | 20 (para modelos MoE) |
+| **Context** | 8192 tokens (settings apurados no waphix-ao-os-v0.5) |
 | **Arquitetura** | SWA (window=1024) |
 
 ### Restrições Críticas
 
 - **ROCm bloqueado**: `rocm_blocked: true` - só funciona com Vulkan
-- **NGL limite**: 14 seguro, 15 borderline, 16+ = OOM
+- **NGL 99**: Settings agressivos apurados no waphix-ao-os-v0.5, podem usar mais VRAM
+- **NMOE 20**: Específico para modelos MoE como Gemma 4 26B A4B
 - **SWA**: Sliding Window Attention com window=1024
 - **Multimodal**: Disponível via `gemma-4-26b-mmproj-F16.gguf` (opcional)
 
