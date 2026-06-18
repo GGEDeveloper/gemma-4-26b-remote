@@ -9,7 +9,7 @@ $REMOTE_PORT = "22"
 Write-Host "=== Configurar Pubkey SSH - laptopdev -> waphixai ===" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Este script configura a pubkey SSH para:"
-Write-Host "  $REMOTE_USER@$REMOTE_HOST:$REMOTE_PORT"
+Write-Host "  ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PORT}"
 Write-Host ""
 
 # Função para verificar se pubkey já existe
@@ -66,7 +66,7 @@ function Generate-Key {
 function Test-SSHConnectivity {
     Write-Host "Verificando conectividade SSH..." -ForegroundColor Cyan
     
-    $result = ssh -o ConnectTimeout=5 -o BatchMode=yes "$REMOTE_USER@$REMOTE_HOST" "echo SSH OK" 2>&1
+    $result = ssh -o ConnectTimeout=5 -o BatchMode=yes "${REMOTE_USER}@${REMOTE_HOST}" "echo SSH OK" 2>&1
     
     if ($LASTEXITCODE -eq 0) {
         Write-Host "✓ SSH com pubkey já funciona" -ForegroundColor Green
@@ -84,17 +84,17 @@ function Install-Pubkey {
     
     $pubkey = Get-Content $PUBKEY_FILE
     
-    Write-Host "  A instalar pubkey em: $REMOTE_USER@$REMOTE_HOST" -ForegroundColor Yellow
+    Write-Host "  A instalar pubkey em: ${REMOTE_USER}@${REMOTE_HOST}" -ForegroundColor Yellow
     Write-Host "  Será pedida a password SSH" -ForegroundColor Yellow
     Write-Host ""
     
     # Usar ssh-copy-id se disponível
     if (Get-Command ssh-copy-id -ErrorAction SilentlyContinue) {
-        ssh-copy-id -i $PUBKEY_FILE "$REMOTE_USER@$REMOTE_HOST"
+        ssh-copy-id -i $PUBKEY_FILE "${REMOTE_USER}@${REMOTE_HOST}"
     }
     else {
         # Fallback manual
-        ssh "$REMOTE_USER@$REMOTE_HOST" "mkdir -p ~/.ssh && chmod 700 ~/.ssh && echo '$pubkey' >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+        ssh "${REMOTE_USER}@${REMOTE_HOST}" "mkdir -p ~/.ssh && chmod 700 ~/.ssh && echo '$pubkey' >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
     }
     
     Write-Host "✓ Pubkey instalada" -ForegroundColor Green
@@ -104,7 +104,7 @@ function Install-Pubkey {
 function Test-Pubkey {
     Write-Host "Testando pubkey..." -ForegroundColor Cyan
     
-    $result = ssh -o ConnectTimeout=5 -o BatchMode=yes "$REMOTE_USER@$REMOTE_HOST" "echo SSH OK" 2>&1
+    $result = ssh -o ConnectTimeout=5 -o BatchMode=yes "${REMOTE_USER}@${REMOTE_HOST}" "echo SSH OK" 2>&1
     
     if ($LASTEXITCODE -eq 0) {
         Write-Host "✓ SSH com pubkey funciona" -ForegroundColor Green
@@ -122,7 +122,7 @@ function Show-Summary {
     Write-Host "=== Resumo ===" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "Pubkey: $PUBKEY_FILE"
-    Write-Host "Remote: $REMOTE_USER@$REMOTE_HOST:$REMOTE_PORT"
+    Write-Host "Remote: ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PORT}"
     Write-Host ""
     
     if (Test-SSHConnectivity) {
@@ -134,7 +134,7 @@ function Show-Summary {
     
     Write-Host ""
     Write-Host "Teste manual:"
-    Write-Host "  ssh $REMOTE_USER@$REMOTE_HOST"
+    Write-Host "  ssh ${REMOTE_USER}@${REMOTE_HOST}"
     Write-Host ""
 }
 

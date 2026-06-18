@@ -678,7 +678,48 @@ Utilizador clarificou que:
 
 ---
 
-### Formato de Entrada
+## 2026-06-18 00:30 UTC - Correção de Script PowerShell
+
+### Contexto
+
+Utilizador tentou executar `.\scripts\setup-ssh-key.ps1` no Windows mas obteve erro de parsing:
+```
+ParserError: Variable reference is not valid. ':' was not followed by a valid variable name character.
+```
+
+O problema é que no PowerShell, `$REMOTE_HOST:` é interpretado como uma variável inválida.
+
+### Ações Executadas
+
+1. **Corrigido scripts/setup-ssh-key.ps1**
+   - Substituído `$REMOTE_USER@$REMOTE_HOST` por `${REMOTE_USER}@${REMOTE_HOST}` (todas as ocorrências)
+   - Substituído `$REMOTE_USER@$REMOTE_HOST:$REMOTE_PORT` por `${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PORT}`
+   - Usado `${}` para delimitar nomes de variáveis quando seguidos por `:`
+
+### Decisões
+
+1. **Sintaxe PowerShell**
+   - Usar `${variavel}` quando variável é seguida por `:` ou outros caracteres especiais
+   - Evita erros de parsing no PowerShell
+
+### Próximos Passos
+
+1. ⏳ Commit e push da correção
+2. ⏳ Utilizador testar script corrigido no Windows
+
+### Commit Planejado
+
+**Mensagem**: `fix: corrigir sintaxe de variáveis no script PowerShell`
+
+**Conteúdo**:
+- scripts/setup-ssh-key.ps1 (correção de sintaxe `${}`)
+
+**Impacto em projetos existentes**: NENHUM
+- Script isolado corrigido
+
+**Reversibilidade**: Sim - `git reset --hard HEAD~1`
+
+---
 
 ```markdown
 ## YYYY-MM-DD HH:MM UTC - Descrição
